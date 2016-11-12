@@ -399,6 +399,44 @@ Highlight the 1st result."
     st)
   "Syntax table for the solidity language.")
 
+(defun solidity-get-abi ()
+  "Get a List of the Contracts and functions of the current solidity file."
+  (let* ((abioutput (shell-command-to-string
+                   (format "%s --combined-json abi %s"
+                           solidity-solc-path
+                           (buffer-file-name (current-buffer)))))
+         (jsonres (json-read-from-string abioutput))
+         (contracts (cdr (assoc 'contracts jsonres))))
+    (mapcar
+     (lambda (contract)
+       (mapcar (lambda (func)
+                 ;; (message (format "Function Name: %s" (cdr (assoc 'name func)))))
+                 (message (format "Function Name: %s" func)))
+       (cdr (assoc 'abi contract))))
+     contracts)
+
+    ;; (cl-loop for (key . value) in (cdr (assoc 'contracts jsonres))
+    ;;          ;; for each contract
+    ;;          (cl-loop for (key2 . abi) in (cdr (assoc 'abi value))
+    ;;                   ;; for each function
+    ;;                   (cl-loop for func in abi
+    ;;                            (message (assoc 'name func)))))
+      ;; collect (cons value (type-of value)))
+;; (cl-loop for k being the hash-keys of jsonres
+;;                using (hash-values v)
+;;          do
+;;          (message "key %S -> value %S" k v))
+    ))
+
+(defun solidity-estimate-gas ()
+  (interactive)
+  (let (gasoutput (shell-command-to-string
+                   (format "%s --gas %s"
+                           solidity-solc-path
+                           (buffer-file-name (current-buffer)))))
+
+  ))
+
 ;;;###autoload
 (define-derived-mode solidity-mode c-mode "solidity"
   "Major mode for editing solidity language buffers."
