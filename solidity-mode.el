@@ -67,6 +67,10 @@
   (delq nil
         (mapcar (lambda (x) (and (funcall condp x) x)) lst)))
 
+(defun solidity-map (fun lst)
+  (delq nil
+        (mapcar (lambda (x) (funcall fun x)) lst)))
+
 (defconst solidity-keywords
   '("after"
     "as"
@@ -247,7 +251,7 @@
   "Built in data types of the solidity language.")
 
 (defconst solidity-tofontify-builtin-types
-  (solidity-filter
+  (solidity-map
    (lambda (x) (concat x " "))
    solidity-builtin-types)
 
