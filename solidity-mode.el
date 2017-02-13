@@ -249,7 +249,7 @@
 (defconst solidity-tofontify-builtin-types
   (solidity-filter
    (lambda (x) (concat x " "))
-   solidity-keywords)
+   solidity-builtin-types)
 
   "Built-in types that will be fontified as they are and don't have special rules."
   )
