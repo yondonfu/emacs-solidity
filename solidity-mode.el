@@ -246,6 +246,14 @@
     "ureal")
   "Built in data types of the solidity language.")
 
+(defconst solidity-tofontify-builtin-types
+  (solidity-filter
+   (lambda (x) (concat x " "))
+   solidity-keywords)
+
+  "Built-in types that will be fontified as they are and don't have special rules."
+  )
+
 (defconst solidity-builtin-constructs
   '("msg"
     "block"
@@ -273,7 +281,7 @@
 (defconst solidity-font-lock-keywords
   (list
    `(,(regexp-opt solidity-tofontify-keywords 'words) . font-lock-keyword-face)
-   `(,(regexp-opt solidity-builtin-types 'words) . font-lock-type-face)
+   `(,(regexp-opt solidity-tofontify-builtin-types 'words) . font-lock-type-face)
    `(,(regexp-opt solidity-builtin-constructs 'words) . font-lock-builtin-face)
    '(solidity-match-functions (1 font-lock-type-face)
                               (2 font-lock-function-name-face))
